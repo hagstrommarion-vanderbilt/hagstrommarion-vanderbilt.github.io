@@ -126,7 +126,7 @@ function start(root) {
   };
 
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const state = { p: reduce ? 20 : 0, playing: !reduce, visible: true, freq: parseFloat(ui.speed.value), dragging: false };
+  const state = { p: reduce ? 20 : 0, playing: !reduce, visible: true, freq: parseFloat(ui.speed.value) / 120, dragging: false };
   let colors = readColors();
   let last = 0;
   let raf = 0;
@@ -409,8 +409,9 @@ function start(root) {
 
   // ---- Controls ------------------------------------------------------------
   ui.play.addEventListener("click", () => setPlaying(!state.playing));
-  const showSpeed = () => (ui.speedOut.textContent = `${Math.round(state.freq * 120)} steps/min`);
-  ui.speed.addEventListener("input", () => { state.freq = parseFloat(ui.speed.value); showSpeed(); });
+  // The slider is in steps per minute; two steps make one gait cycle.
+  const showSpeed = () => (ui.speedOut.textContent = `${ui.speed.value} steps/min`);
+  ui.speed.addEventListener("input", () => { state.freq = parseFloat(ui.speed.value) / 120; showSpeed(); });
   ui.scrub.addEventListener("input", () => { state.p = parseFloat(ui.scrub.value); setPlaying(false); });
   ui.sound.addEventListener("change", kick);
   ui.cyl.addEventListener("change", kick);
