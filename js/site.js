@@ -138,3 +138,13 @@
 
   $$("[data-year]").forEach((el) => (el.textContent = new Date().getFullYear()));
 })();
+
+// Videos: play muted while on screen, unless the visitor prefers reduced motion.
+(() => {
+  const vids = [...document.querySelectorAll("video[data-autoplay]")];
+  if (!vids.length || matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) return;
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => (e.isIntersecting ? e.target.play().catch(() => {}) : e.target.pause()));
+  }, { threshold: 0.4 });
+  vids.forEach((v) => io.observe(v));
+})();

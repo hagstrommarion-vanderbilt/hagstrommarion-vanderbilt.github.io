@@ -477,3 +477,4 @@ ul { margin: 0; }
 
 /* ---------- Photos inside entries ---------- */
 .entry-media { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 240px)); gap: 10px; margin-top: 14px; }
+.media video { width: 100%; height: 100%; object-fit: cover; display: block; background: #000; }
