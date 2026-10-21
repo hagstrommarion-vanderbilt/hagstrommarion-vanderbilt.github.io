@@ -67,13 +67,13 @@ const VALVE = linear([[0, 0.12], [48, 0.12], [60, 0.88], [85, 0.88], [97, 0.3], 
 
 const STANCE_END = 62;
 const PHASES = [
-  { to: 12, name: "Loading response", mode: "Stance", text: "High flexion resistance. The knee yields a little under load and does not buckle." },
-  { to: 31, name: "Mid stance", mode: "Stance", text: "High flexion resistance keeps the leg stable as the body passes over it." },
-  { to: 50, name: "Terminal stance", mode: "Stance", text: "Load moves to the toe. The controller prepares to release." },
-  { to: 62, name: "Pre-swing", mode: "Release", text: "Resistance drops so the knee can flex for toe-off." },
-  { to: 75, name: "Initial swing", mode: "Swing", text: "Low resistance. The shank swings back freely." },
-  { to: 87, name: "Mid swing", mode: "Swing", text: "Low resistance as the shank swings forward." },
-  { to: 100, name: "Terminal swing", mode: "Damping", text: "Extension damping rises to slow the shank before heel strike." },
+  { to: 12, name: "Loading response", mode: "Stance", text: "High flexion resistance." },
+  { to: 31, name: "Mid stance", mode: "Stance", text: "High flexion resistance." },
+  { to: 50, name: "Terminal stance", mode: "Stance", text: "The controller prepares to release." },
+  { to: 62, name: "Pre-swing", mode: "Release", text: "Resistance drops, knee can flex for toe-off." },
+  { to: 75, name: "Initial swing", mode: "Swing", text: "Low resistance. Shank swings back freely." },
+  { to: 87, name: "Mid swing", mode: "Swing", text: "Low resistance, shank swings forward." },
+  { to: 100, name: "Terminal swing", mode: "Swing", text: "Prepare for heel strike." },
 ];
 const phaseAt = (p) => PHASES.find((ph) => wrap100(p) < ph.to) || PHASES[PHASES.length - 1];
 
