@@ -62,7 +62,7 @@ function linear(keys) {
 const THIGH = periodic([[0, 22], [10, 20], [30, 6], [50, -10], [56, -11], [62, -6], [72, 10], [85, 24], [93, 24]]);
 const KNEE = periodic([[0, 4], [12, 17], [22, 14], [38, 5], [48, 7], [56, 20], [62, 38], [70, 58], [75, 60], [83, 45], [92, 15], [97, 4]]);
 const ANKLE = periodic([[0, 0], [7, -6], [15, 0], [30, 6], [45, 10], [52, 6], [58, -8], [63, -16], [70, -8], [80, 0], [92, 1]]);
-// Valve opening, 0 = closed (high resistance), 1 = open (low resistance).
+// Valve opening, 0 = closed (high resistance), 1 = open. Drives the cylinder color only.
 const VALVE = linear([[0, 0.12], [48, 0.12], [60, 0.88], [85, 0.88], [97, 0.3], [100, 0.12]]);
 
 const STANCE_END = 62;
@@ -119,7 +119,6 @@ function start(root) {
     cyl: root.querySelector("[data-k-cyl]"),
     pct: root.querySelector("[data-k-pct]"),
     knee: root.querySelector("[data-k-knee]"),
-    valve: root.querySelector("[data-k-valve]"),
     mode: root.querySelector("[data-k-mode]"),
     phase: root.querySelector("[data-k-phase]"),
     text: root.querySelector("[data-k-text]"),
@@ -288,7 +287,7 @@ function start(root) {
     ctx.fillText(`${P.knee.toFixed(1)}°`, X(lab), Y(lab));
   }
 
-  // ---- Trace: knee angle and valve opening over the cycle ------------------
+  // ---- Trace: knee angle over the gait cycle ------------------------------
   function drawTrace() {
     const { ctx, w, h } = fit(trace);
     ctx.clearRect(0, 0, w, h);
@@ -297,7 +296,6 @@ function start(root) {
     const ph = h - padT - padB;
     const xAt = (p) => padL + (p / 100) * pw;
     const yKnee = (d) => padT + ph - (d / 70) * ph;
-    const yValve = (v) => padT + ph - v * ph;
     ctx.font = '500 10px "JetBrains Mono", monospace';
 
     // Stance / swing bands.
@@ -313,15 +311,6 @@ function start(root) {
       ctx.fillText(`${p}%`, clamp(xAt(p) - 10, padL, w - padR - 26), h - 4);
     }
 
-    // Valve opening.
-    ctx.beginPath();
-    for (let p = 0; p <= 100; p += 0.5) { const x = xAt(p), y = yValve(VALVE(p)); p ? ctx.lineTo(x, y) : ctx.moveTo(x, y); }
-    ctx.strokeStyle = colors.steel;
-    ctx.setLineDash([4, 3]);
-    ctx.lineWidth = 1.5;
-    ctx.stroke();
-    ctx.setLineDash([]);
-
     // Knee angle.
     ctx.beginPath();
     for (let p = 0; p <= 100; p += 0.5) { const x = xAt(p), y = yKnee(KNEE(p)); p ? ctx.lineTo(x, y) : ctx.moveTo(x, y); }
@@ -336,15 +325,11 @@ function start(root) {
     ctx.beginPath(); ctx.moveTo(xAt(p), padT); ctx.lineTo(xAt(p), padT + ph); ctx.stroke();
     ctx.fillStyle = colors.accent;
     ctx.beginPath(); ctx.arc(xAt(p), yKnee(KNEE(p)), 4, 0, Math.PI * 2); ctx.fill();
-    ctx.fillStyle = colors.steel;
-    ctx.beginPath(); ctx.arc(xAt(p), yValve(VALVE(p)), 3, 0, Math.PI * 2); ctx.fill();
 
     // Legend.
     ctx.textAlign = "right";
     ctx.fillStyle = colors.accent;
-    ctx.fillText("KNEE ANGLE", w - padR - 104, padT - 8);
-    ctx.fillStyle = colors.steel;
-    ctx.fillText("VALVE OPENING", w - padR, padT - 8);
+    ctx.fillText("KNEE ANGLE", w - padR, padT - 8);
     ctx.textAlign = "left";
   }
 
@@ -367,7 +352,6 @@ function start(root) {
     const ph = phaseAt(p);
     ui.pct.textContent = `${p.toFixed(0)}%`;
     ui.knee.textContent = `${KNEE(p).toFixed(1)}°`;
-    ui.valve.textContent = `${Math.round(VALVE(p) * 100)}%`;
     const idx = PHASES.indexOf(ph);
     if (idx !== lastPhase) {
       lastPhase = idx;
