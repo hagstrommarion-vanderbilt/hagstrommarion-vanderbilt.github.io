@@ -64,12 +64,12 @@
                 <div><span>Mode</span><b data-k-mode>Stance</b></div>
               </div>
             </div>
-            <div class="knee-state"><b data-k-phase>Loading response</b><span data-k-text></span></div>
+            <div class="knee-state"><div class="knee-stack" data-k-phase><b class="is-active">Loading response</b></div><div class="knee-stack" data-k-text></div></div>
             <div class="knee-trace" title="Drag to scrub through the gait cycle"><canvas aria-hidden="true"></canvas></div>
             <div class="knee-controls">
               <button class="btn btn-sm" type="button" data-k-play aria-pressed="false">Pause</button>
               <label class="grow">Gait % <input type="range" min="0" max="99.9" step="0.1" value="0" data-k-scrub aria-label="Gait cycle position"></label>
-              <label>Speed <input type="range" min="0.5" max="1.15" step="0.01" value="0.85" data-k-speed aria-label="Walking cadence"><span class="mono" data-k-speed-out></span></label>
+              <label>Speed <input type="range" min="0.3" max="1.15" step="0.01" value="0.55" data-k-speed aria-label="Walking cadence"><span class="mono" data-k-speed-out></span></label>
               <label><input type="checkbox" checked data-k-sound> Sound leg</label>
               <label><input type="checkbox" checked data-k-cyl> Cylinder</label>
             </div>

@@ -218,7 +218,10 @@ ul { margin: 0; }
 .knee-read div { display: flex; justify-content: space-between; gap: 12px; padding: 6px 10px; border-radius: var(--radius-sm); background: color-mix(in srgb, var(--surface) 86%, transparent); border: 1px solid var(--line); }
 .knee-read span { color: var(--muted); }
 .knee-read b { font-weight: 500; font-variant-numeric: tabular-nums; }
-.knee-state { padding: 10px 16px; border-top: 1px solid var(--line); display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; min-height: 44px; }
+.knee-state { padding: 10px 16px; border-top: 1px solid var(--line); }
+.knee-stack { display: grid; }
+.knee-stack > * { grid-area: 1 / 1; visibility: hidden; }
+.knee-stack > .is-active { visibility: visible; }
 .knee-state b { font-family: var(--font-head); font-weight: 600; }
 .knee-state span { color: var(--muted); font-size: 14px; }
 .knee-trace { position: relative; height: 120px; border-top: 1px solid var(--line); cursor: ew-resize; touch-action: none; }

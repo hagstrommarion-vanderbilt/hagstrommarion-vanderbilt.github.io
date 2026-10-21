@@ -349,18 +349,31 @@ function start(root) {
   }
 
   // ---- Readouts ------------------------------------------------------------
-  let lastPhase = "";
+  // Every phase name and description sits in the same grid cell, so the box
+  // is always as tall as the longest one and the trace below never shifts.
+  const layer = (box, tag, key) => {
+    box.replaceChildren(...PHASES.map((ph) => {
+      const el = document.createElement(tag);
+      el.textContent = ph[key];
+      return el;
+    }));
+    return [...box.children];
+  };
+  const nameLayers = layer(ui.phase, "b", "name");
+  const textLayers = layer(ui.text, "span", "text");
+  let lastPhase = -1;
   function updateUI() {
     const p = wrap100(state.p);
     const ph = phaseAt(p);
     ui.pct.textContent = `${p.toFixed(0)}%`;
     ui.knee.textContent = `${KNEE(p).toFixed(1)}°`;
     ui.valve.textContent = `${Math.round(VALVE(p) * 100)}%`;
-    if (ph.name !== lastPhase) {
-      lastPhase = ph.name;
+    const idx = PHASES.indexOf(ph);
+    if (idx !== lastPhase) {
+      lastPhase = idx;
       ui.mode.textContent = ph.mode;
-      ui.phase.textContent = ph.name;
-      ui.text.textContent = ph.text;
+      nameLayers.forEach((el, i) => el.classList.toggle("is-active", i === idx));
+      textLayers.forEach((el, i) => el.classList.toggle("is-active", i === idx));
     }
     if (!state.dragging && document.activeElement !== ui.scrub) ui.scrub.value = p.toFixed(1);
   }
